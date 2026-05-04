@@ -57,43 +57,55 @@ const WorldHeatmap = () => {
       fillOpacity: val !== undefined ? 0.85 : 0.25,
     });
 
-    fetch(GEOJSON_URL)
-      .then((r) => r.json())
-      .then((geo) => {
-        L.geoJSON(geo, {
-          style: (feature) => {
-            const id = feature?.properties?.ISO_A3 || feature?.id;
-            return styleFor(COUNTRY_DATA[id]?.value);
-          },
-          onEachFeature: (feature, layer) => {
-            const id = feature?.properties?.ISO_A3 || (feature?.id as string);
-            const data = COUNTRY_DATA[id];
-            const fallbackName = feature?.properties?.ADMIN || feature?.properties?.name || "Unknown";
-
-            layer.on({
-              mouseover: (e) => {
-                const l = e.target as L.Path;
-                l.setStyle({ weight: 2, color: "hsl(0 0% 100%)", fillOpacity: 1 });
-                l.bringToFront();
-              },
-              mousemove: (e) => {
-                const oe = (e as L.LeafletMouseEvent).originalEvent;
-                setHovered({
-                  name: data?.name ?? fallbackName,
-                  value: data?.value ?? null,
-                  detail: data?.detail ?? null,
-                  x: oe.clientX,
-                  y: oe.clientY,
-                });
-              },
-              mouseout: (e) => {
-                (e.target as L.Path).setStyle(styleFor(data?.value));
-                setHovered(null);
-              },
-            });
-          },
-        }).addTo(map);
+    Promise.all([
+      fetch(GEOJSON_URL).then((r) => r.json()),
+      d3.csv(CSV_URL, (row) => ({
+        iso: String(row.iso_a3 || "").toUpperCase().trim(),
+        name: String(row.name || "").trim(),
+        value: +(row.value ?? 0),
+        detail: String(row.detail || "").trim(),
+      })),
+    ]).then(([geo, rows]) => {
+      const data: Record<string, CountryDatum> = {};
+      rows.forEach((r) => {
+        if (r.iso) data[r.iso] = { name: r.name, value: r.value, detail: r.detail };
       });
+      dataRef.current = data;
+
+      L.geoJSON(geo, {
+        style: (feature) => {
+          const id = feature?.properties?.ISO_A3 || feature?.id;
+          return styleFor(data[id]?.value);
+        },
+        onEachFeature: (feature, layer) => {
+          const id = feature?.properties?.ISO_A3 || (feature?.id as string);
+          const datum = data[id];
+          const fallbackName = feature?.properties?.ADMIN || feature?.properties?.name || "Unknown";
+
+          layer.on({
+            mouseover: (e) => {
+              const l = e.target as L.Path;
+              l.setStyle({ weight: 2, color: "hsl(0 0% 100%)", fillOpacity: 1 });
+              l.bringToFront();
+            },
+            mousemove: (e) => {
+              const oe = (e as L.LeafletMouseEvent).originalEvent;
+              setHovered({
+                name: datum?.name ?? fallbackName,
+                value: datum?.value ?? null,
+                detail: datum?.detail ?? null,
+                x: oe.clientX,
+                y: oe.clientY,
+              });
+            },
+            mouseout: (e) => {
+              (e.target as L.Path).setStyle(styleFor(datum?.value));
+              setHovered(null);
+            },
+          });
+        },
+      }).addTo(map);
+    });
 
     return () => {
       map.remove();
