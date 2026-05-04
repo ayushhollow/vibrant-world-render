@@ -55,6 +55,16 @@ const parsePct = (s: string): number | null => {
   return m ? parseFloat(m[1]) : null;
 };
 
+// Convert imgur page/album links into direct image URLs.
+// e.g. https://imgur.com/a/tZjQQz7 -> https://i.imgur.com/tZjQQz7.jpg
+const resolvePhoto = (url: string): string => {
+  if (!url || url === "N/A") return "/placeholder.svg";
+  if (url.includes("i.imgur.com")) return url;
+  const m = url.match(/imgur\.com\/(?:a\/|gallery\/)?([A-Za-z0-9]+)/);
+  if (m) return `https://i.imgur.com/${m[1]}.jpg`;
+  return url;
+};
+
 type Journalist = {
   name: string;
   photo: string;
