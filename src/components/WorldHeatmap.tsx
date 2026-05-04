@@ -229,12 +229,15 @@ const WorldHeatmap = () => {
               },
             });
 
-            if (stat) {
-              (layer as L.Path).bindTooltip(
-                `<strong>${name}</strong><br/>Avg negative coverage: ${stat.value.toFixed(1)}%<br/>${stat.count} journalist${stat.count > 1 ? "s" : ""}`,
-                { sticky: true, direction: "top", className: "leaflet-custom-tip" },
-              );
-            }
+            const tipHtml = stat
+              ? `<strong>${name}</strong><br/>Avg negative coverage: ${stat.value.toFixed(1)}%<br/>${stat.count} journalist${stat.count > 1 ? "s" : ""}<br/><em>Click for details</em>`
+              : `<strong>${name}</strong><br/><span style="opacity:.7">No data</span>`;
+            (layer as L.Path).bindTooltip(tipHtml, {
+              sticky: true,
+              direction: "top",
+              className: "leaflet-custom-tip",
+              opacity: 1,
+            });
           },
         }).addTo(map);
       });
