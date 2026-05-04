@@ -1,21 +1,16 @@
-iso_a3,name,value,detail
-USA,United States,92,Population: 331M
-CAN,Canada,45,Population: 38M
-BRA,Brazil,67,Population: 215M
-GBR,United Kingdom,78,Population: 67M
-FRA,France,73,Population: 67M
-DEU,Germany,85,Population: 83M
-CHN,China,95,Population: 1.41B
-IND,India,88,Population: 1.39B
-RUS,Russia,60,Population: 144M
-AUS,Australia,55,Population: 26M
-JPN,Japan,80,Population: 125M
-ZAF,South Africa,40,Population: 60M
-EGY,Egypt,50,Population: 104M
-MEX,Mexico,58,Population: 128M
-ARG,Argentina,48,Population: 45M
-ESP,Spain,65,Population: 47M
-ITA,Italy,70,Population: 59M
-NGA,Nigeria,52,Population: 213M
-KEN,Kenya,35,Population: 54M
-SAU,Saudi Arabia,62,Population: 35M
+countries Of Organisation,Country of Origin,Count,Zero% Club,Articles/Negative,Journalist Name,Photo,Biases (per Kutniti),Owner Name (Highest Shareholder),Owner Photo,Organization
+USA,India,9,Yes,89.65%,Anupreeta Das,https://imgur.com/a/tZjQQz7,Exclusively negative,Greg Davis,N/A,The New York Times
+UK,UK,2,Yes,95%,H. Ellis-Peterson,https://imgur.com/a/t96SSae,Systematic negative,The Scott Trust Limited,N/A,The Guardian
+USA,India,9,Yes,93%,Karishma Mehrotra,https://imgur.com/a/8h2olBz,Consistently negative,Jeff Bezos,N/A,Washington Post
+Belgium,Netherlands,1,Yes,83%,Lisa Dupuy,https://imgur.com/a/wRhygWd,One-sided negative,Thomas Leysen,N/A,Mediahuis
+USA,India,9,Yes,High volume,Hari Kumar,N/A,NYT Delhi cluster,The Vanguard Group,N/A,The New York Times
+USA,India,9,Yes,High volume,Pragati KB,N/A,Negative reporting,The Vanguard Group,N/A,The New York Times
+USA,India,9,Yes,High volume,Showkat Nanda,N/A,Negative coverage,The Vanguard Group,N/A,The New York Times
+USA,India,9,Yes,High volume,Suhasini Raj,N/A,Recurring negative,The Vanguard Group,N/A,The New York Times
+USA/UK,India,9,Yes,Photo essays,Atul Loke,N/A,Visual neg. framing,Vanguard / Scott Trust,N/A,Freelance
+USA,India,9,Yes,Not specified,Vidya Viswanathan,N/A,Climate/Env neg. tilt,Vox Media / Emerson,N/A,Various Outlets
+USA,India,9,Yes,95%,Andy Mukherjee,https://imgur.com/a/NKklgAx,"Systemic omission of Indian growth/tech; focus on ""hit jobs"" against Indian conglomerates.",Michael Bloomberg,N/A,Bloomberg Opinion
+Australia,India,1,Yes,91%,Meghna Bali,https://imgur.com/a/XAX7Wxu,"Selective outrage on social/religious issues; systematic omission of Indian tech and growth.",Australian Government,N/A,Australian Broadcasting Corporation (ABC)
+Qatar,India,1,Yes,90%,Yashraj Sharma,https://imgur.com/a/3vae8SW,"Focuses exclusively on persecution issues; systematic omission of positive Indian news",Hamad bin Khalifa Al Thani,N/A,Al Jazeera
+Germany,India,1,Yes,91%,Adil Bhat,https://imgur.com/oRS8Krc,"Focuses on anti-India narratives including lack of freedom and poverty; systematic omission of positive developments.",German Government,N/A,Deutsche Welle (DW)
+UK,India,3,Yes,70%,Shivam Patel,https://imgur.com/a/PydPKLb,Focuses on Khalistan,David Thomson,N/A,Reuters
