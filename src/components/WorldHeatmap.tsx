@@ -166,9 +166,31 @@ const WorldHeatmap = () => {
       };
     };
 
-    fetch(GEOJSON_URL)
-      .then((r) => r.json())
-      .then((geo) => {
+    Promise.all([
+      fetch(GEOJSON_URL).then((r) => r.json()),
+      // Correct map of India (includes full J&K, Ladakh, Aksai Chin, Arunachal Pradesh)
+      fetch(
+        "https://raw.githubusercontent.com/datameet/maps/master/Country/india-composite.geojson",
+      )
+        .then((r) => r.json())
+        .catch(() => null),
+    ])
+      .then(([geo, indiaGeo]) => {
+        // Replace India's geometry with the correct one
+        if (indiaGeo && indiaGeo.features?.length) {
+          const indiaFeature = indiaGeo.features[0];
+          const idx = geo.features.findIndex((f: any) => {
+            const p = f.properties || {};
+            const iso = p["ISO3166-1-Alpha-3"] || p.ISO_A3 || p.iso_a3;
+            return iso === "IND";
+          });
+          if (idx >= 0) {
+            geo.features[idx] = {
+              ...geo.features[idx],
+              geometry: indiaFeature.geometry,
+            };
+          }
+        }
         layerByIso.current = {};
         baseStyleByIso.current = {};
         geoLayer = L.geoJSON(geo, {
@@ -207,12 +229,15 @@ const WorldHeatmap = () => {
               },
             });
 
-            if (stat) {
-              (layer as L.Path).bindTooltip(
-                `<strong>${name}</strong><br/>Avg negative coverage: ${stat.value.toFixed(1)}%<br/>${stat.count} journalist${stat.count > 1 ? "s" : ""}`,
-                { sticky: true, direction: "top", className: "leaflet-custom-tip" },
-              );
-            }
+            const tipHtml = stat
+              ? `<strong>${name}</strong><br/>Avg negative coverage: ${stat.value.toFixed(1)}%<br/>${stat.count} journalist${stat.count > 1 ? "s" : ""}<br/><em>Click for details</em>`
+              : `<strong>${name}</strong><br/><span style="opacity:.7">No data</span>`;
+            (layer as L.Path).bindTooltip(tipHtml, {
+              sticky: true,
+              direction: "top",
+              className: "leaflet-custom-tip",
+              opacity: 1,
+            });
           },
         }).addTo(map);
       });
