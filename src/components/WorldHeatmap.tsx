@@ -180,13 +180,11 @@ const WorldHeatmap = () => {
             return s;
           },
           onEachFeature: (feature, layer) => {
-            const iso = feature?.properties?.ISO_A3 || (feature?.id as string);
+            const p: any = feature?.properties || {};
+            const iso = p["ISO3166-1-Alpha-3"] || p.ISO_A3 || p.iso_a3 || (feature?.id as string);
             (layerByIso.current[iso] ||= []).push(layer as L.Path);
             const stat = countryStats[iso];
-            const name =
-              feature?.properties?.ADMIN ||
-              feature?.properties?.name ||
-              iso;
+            const name = p.ADMIN || p.name || p.NAME || iso;
 
             (layer as L.Path).on({
               mouseover: () => {
