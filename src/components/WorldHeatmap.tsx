@@ -349,13 +349,19 @@ const WorldHeatmap = () => {
                 className="group mb-2 flex cursor-pointer gap-3 rounded-lg border border-transparent p-2 transition hover:border-border hover:bg-muted/50"
               >
                 <img
-                  src={
-                    j.photo && j.photo !== "N/A"
-                      ? j.photo
-                      : "/placeholder.svg"
-                  }
+                  src={resolvePhoto(j.photo)}
                   onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).src = "/placeholder.svg";
+                    const img = e.currentTarget as HTMLImageElement;
+                    // Try fallback extensions before giving up
+                    const tried = img.dataset.tried || "";
+                    const exts = ["jpg", "png", "jpeg", "gif"];
+                    const next = exts.find((x) => !tried.includes(x));
+                    if (next && img.src.includes("i.imgur.com")) {
+                      img.dataset.tried = tried + next;
+                      img.src = img.src.replace(/\.(jpg|png|jpeg|gif)$/, `.${next}`);
+                    } else {
+                      img.src = "/placeholder.svg";
+                    }
                   }}
                   alt={j.name}
                   className="h-12 w-12 flex-shrink-0 rounded-full border border-border object-cover"
