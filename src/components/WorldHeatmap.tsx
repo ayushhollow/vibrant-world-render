@@ -173,7 +173,8 @@ const WorldHeatmap = () => {
         baseStyleByIso.current = {};
         geoLayer = L.geoJSON(geo, {
           style: (feature) => {
-            const iso = feature?.properties?.ISO_A3 || (feature?.id as string);
+            const p = feature?.properties || {};
+            const iso = p["ISO3166-1-Alpha-3"] || p.ISO_A3 || p.iso_a3 || (feature?.id as string);
             const s = styleFor(iso);
             baseStyleByIso.current[iso] = s;
             return s;
