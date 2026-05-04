@@ -23,6 +23,8 @@ const WorldHeatmap = () => {
     y: number;
   } | null>(null);
 
+  const dataRef = useRef<Record<string, CountryDatum>>({});
+
   useEffect(() => {
     if (!mapRef.current || leafletRef.current) return;
 
